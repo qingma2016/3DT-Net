@@ -1,0 +1,67 @@
+地址：s19.natfrp.org
+端口号：33105
+用户名：lpw
+密码：123456
+ssh -p 8865 lpw@202.114.107.13
+
+202.118.239.142
+
+CUDA_VISIBLE_DEVICES=
+script -f output.txt
+
+1、从服务器上下载文件
+scp username@servername:/path/filename /var/www/local_dir（本地目录）
+
+ 例如scp root@192.168.0.101:/var/www/test.txt  把192.168.0.101上的/var/www/test.txt 的文件下载到/var/www/local_dir（本地目录）
+
+
+2、上传本地文件到服务器
+scp /path/filename username@servername:/path   
+
+例如scp /var/www/test.php  root@192.168.0.101:/var/www/  把本机/var/www/目录下的test.php文件上传到192.168.0.101这台服务器上的/var/www/目录中
+
+ 
+
+3、从服务器下载整个目录
+scp -r username@servername:/var/www/remote_dir/（远程目录） /var/www/local_dir（本地目录）
+
+例如:scp -r root@192.168.0.101:/var/www/test  /var/www/  
+
+4、上传目录到服务器
+scp  -r local_dir username@servername:remote_dir
+例如：scp -r test  root@192.168.0.101:/var/www/   把当前目录下的test目录上传到服务器的/var/www/ 目录
+
+
+python -m visdom.server -p 111
+
+ssh -p 33543 lpw@cn-zj-bgp.sakurafrp.com   TITAN V
+
+http://www.aitical.cn:7605/
+
+ossutil64 cp oss://erfect/SSSR_CAVEdata.zip SSSR_CAVE
+
+mv SSSR_CAVE SSSR_CAVE.rar
+
+Host kb543-10titanX
+    HostName 121.48.165.80
+    User mingyi
+    Port 12288
+
+ssh -p 16857 lpw@cn-zj-dx-3.sakurafrp.com  P100
+
+visdom -port 9087
+
+http://oss-cn-shenzhen.aliyuncs.com
+LTAI4GCq1qa7RyK8Z8sbzEvd
+5KDEU4UE9rlxlBYvxy1jyMvQb2nE6z
+
+ossutil cp oss://qingma2016/SSSR_CAVEdata.zip SSSR_CAVE
+fig
+cn-zj-dx.sakurafrp.com:42218
+
+
+ssh -p 12688 lpw@cn-zj-dx-3.sakurafrp.com 3090
+
+. ~/.bashrc && cd /userhome/mq/SSSR_NTIRE/2X/SSJSR && python main.py
+
+python -m torch.distributed.launch --nproc_per_node=1 main.py
