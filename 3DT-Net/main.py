@@ -12,7 +12,7 @@ import socket
 
 from torch.optim.lr_scheduler import StepLR, MultiStepLR
 from torch.utils.data import DataLoader
-from network_31 import VSR_CAS
+from network_31 import _3DT_Net
 from data import get_patch_training_set, get_test_set
 from torch.autograd import Variable
 from psnr import MPSNR
@@ -97,7 +97,7 @@ print("===> distribute model")
 #     local_rank = 0
 device = 'cuda:0'
 # model = VSR_CAS(channel0=opt.ChDim, factor=opt.upscale_factor, P=P ,patch_size =opt.patch_size).cuda()
-model = VSR_CAS(channel0=opt.ChDim, factor=opt.upscale_factor ,patch_size =opt.patch_size).to(device)
+model = _3DT_Net(channel0=opt.ChDim, factor=opt.upscale_factor ,patch_size =opt.patch_size).to(device)
 
 # if use_dist:
 #     model = torch.nn.parallel.DistributedDataParallel(model,
@@ -124,6 +124,17 @@ current_time = datetime.now().strftime('%b%d_%H-%M-%S')
 CURRENT_DATETIME_HOSTNAME = '/' + current_time + '_' + socket.gethostname()
 tb_logger = SummaryWriter(log_dir='./tb_logger/' + 'unfolding2' + CURRENT_DATETIME_HOSTNAME)
 current_step = 0
+
+
+def mkdir(path):
+    folder = os.path.exists(path)
+
+    if not folder:
+        os.makedirs(path)
+        print("---  new folder...  ---")
+        print("---  " + path + "  ---")
+    else:
+        print("---  There is " + path + " !  ---")
 
 
 def train(epoch, optimizer, scheduler):
@@ -167,6 +178,7 @@ def train(epoch, optimizer, scheduler):
 def test():
     avg_psnr = 0
     avg_time = 0
+    mkdir(opt.outputpath)
     model.eval()
     with torch.no_grad():
         for batch in testing_data_loader:
@@ -197,7 +209,7 @@ def test():
 
 
 def checkpoint(epoch):
-
+    mkdir(opt.save_folder)
     model_out_path = opt.save_folder+"_epoch_{}.pth".format(epoch)
     if epoch % 1 == 0:
         save_dict = dict(

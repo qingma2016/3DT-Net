@@ -14,12 +14,12 @@ modify fast DVD(vedio denoising)
 """
 
 
-class SSPN(nn.Module):
+class swin_Transformer(nn.Module):
     def __init__(self, n_feats, img_size=64, patch_size=4, depths=[6], num_heads=[6],
                  window_size=8, mlp_ratio=2, qkv_bias=True, qk_scale=None, drop_path_rate=0.1,
                  norm_layer=nn.LayerNorm, patch_norm=True, use_checkpoint=False, resi_connection='1conv',
                  **kwargs):
-        super(SSPN, self).__init__()
+        super(swin_Transformer, self).__init__()
 
         self.patch_norm = patch_norm
 
@@ -88,13 +88,13 @@ class SSPN(nn.Module):
         return x
 
 # a single branch of proposed SSPSR
-class BranchUnit(nn.Module):
+class Prior(nn.Module):
     def __init__(self, n_colors, n_feats):
-        super(BranchUnit, self).__init__()
+        super(Prior, self).__init__()
         kernel_size = 3
         self.head = nn.Conv2d(64, 128, kernel_size, padding=3 // 2)
         self.feture = nn.Conv2d(128, n_feats, kernel_size, padding=3 // 2)
-        self.body = SSPN(n_feats)
+        self.body = swin_Transformer(n_feats)
         # self.upsample = Upsampler(conv, up_scale, n_feats)
 
         wn = lambda x: torch.nn.utils.weight_norm(x)
@@ -123,12 +123,10 @@ class BranchUnit(nn.Module):
 
         return y, x
 
-class VSR_CAS(torch.nn.Module):
-    """
-    network of 'Burst Denoising with Kernel Prediction Networks'
-    """
+class _3DT_Net(torch.nn.Module):
+
     def __init__(self , channel0 ,factor ,patch_size):
-        super(VSR_CAS, self).__init__()
+        super(_3DT_Net, self).__init__()
 
         self.channel0 = channel0
         self.up_factor = factor
@@ -149,7 +147,7 @@ class VSR_CAS(torch.nn.Module):
         self.eta_5 = torch.nn.Parameter(torch.tensor(0.9))
         self.delta_6 = torch.nn.Parameter(torch.tensor(0.1))
         self.eta_6 = torch.nn.Parameter(torch.tensor(0.9))
-        self.spatial = BranchUnit(31, 180)
+        self.spatial = Prior(31, 180)
         self.fe_conv1 = torch.nn.Conv2d(in_channels=31, out_channels=64, kernel_size=3, padding=3 // 2)
         self.fe_conv2 = torch.nn.Conv2d(in_channels=192, out_channels=64, kernel_size=3, padding=3 // 2)
         self.fe_conv3 = torch.nn.Conv2d(in_channels=192, out_channels=64, kernel_size=3, padding=3 // 2)
