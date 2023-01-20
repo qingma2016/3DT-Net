@@ -164,7 +164,7 @@ def train(epoch, optimizer, scheduler):
         loss.backward()
 
         optimizer.step()
-        scheduler.step()
+        
 
         if iteration % 100 == 0:
 
@@ -227,6 +227,7 @@ if opt.mode == 1:
         avg_loss = train(epoch, optimizer, scheduler)
         checkpoint(epoch)
         torch.cuda.empty_cache()
+        scheduler.step()
 
 else:
     test()
